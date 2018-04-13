@@ -8,7 +8,7 @@ metadata:
     prometheus: {{ .Release.Name }}
     release: {{ .Release.Name }}
     role: alert-rules
-  name: {{ template "exporter-node.fullname" . }}
+  name: {{ template "exporter-node.name" . }}
 data:
 {{- if .Values.prometheusRules }}
 {{- $root := . }}

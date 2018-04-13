@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "exporter-node.fullname" . }}
+  name: {{ template "exporter-node.name" . }}
   labels:
     app: {{ template "exporter-node.name" . }}
     component: node-exporter
@@ -16,6 +16,6 @@ spec:
     targetPort: metrics
     protocol: TCP
   selector:
-    app: {{ template "exporter-node.fullname" . }}
+    app: {{ template "exporter-node.name" . }}
     component: node-exporter
     release: {{ .Release.Name }}

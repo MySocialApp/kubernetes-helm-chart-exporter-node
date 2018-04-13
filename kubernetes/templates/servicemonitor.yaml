@@ -7,7 +7,7 @@ metadata:
     heritage: "{{ .Release.Service }}"
     release: "{{ .Release.Name }}"
     prometheus: {{ .Release.Name }}
-  name: {{ template "exporter-node.fullname" . }}
+  name: {{ template "exporter-node.name" . }}
 spec:
   jobLabel: component
   selector:
