@@ -8,6 +8,7 @@ metadata:
     heritage: {{ .Release.Service }}
     release: {{ .Release.Name }}
   name: {{ template "exporter-node.name" . }}
+  namespace: {{ .Release.Namespace }}
 spec:
   template:
     metadata:
