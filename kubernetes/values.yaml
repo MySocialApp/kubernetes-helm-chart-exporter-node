@@ -18,10 +18,12 @@ resources:
     cpu: 100m
     memory: 30Mi
 
-container: 
+container:
   args:
   - --path.procfs=/host/proc
   - --path.sysfs=/host/sys
+  - --collector.filesystem.ignored-mount-points
+  - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs|rootfs/opt/docker/devicemapper)($$|/)"
 
   volumes:
   - name: proc
@@ -30,13 +32,19 @@ container:
   - name: sys
     hostPath:
       path: /sys
-  
+  - name: rootfs
+    hostPath:
+      path: /
+
   volumeMounts:
   - name: proc
     mountPath: /host/proc
     readOnly:  true
   - name: sys
     mountPath: /host/sys
+    readOnly: true
+  - name: rootfs
+    mountPath: /rootfs
     readOnly: true
  
 ## Tolerations for use with node taints
