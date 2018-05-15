@@ -5,10 +5,11 @@ metadata:
     app: "prometheus"
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     heritage: {{ .Release.Service }}
-    prometheus: {{ .Release.Name }}
+    prometheus: {{ .Release.Namespace }}
     release: {{ .Release.Name }}
     role: alert-rules
   name: {{ template "exporter-node.name" . }}
+  namespace: {{ .Release.Namespace }}
 data:
 {{- if .Values.prometheusRules }}
 {{- $root := . }}
