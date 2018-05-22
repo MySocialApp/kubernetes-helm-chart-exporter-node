@@ -20,4 +20,5 @@ data:
 {{ else }}
   node.rules: |-
     {{- include "node.rules.yaml.tpl" . | indent 4}}
+    {{- include "custom-node.rules.yaml.tpl" . | indent 4}}
 {{ end }}

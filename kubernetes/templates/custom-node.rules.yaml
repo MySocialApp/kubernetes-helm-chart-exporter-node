@@ -1,0 +1,40 @@
+{{ define "custom-node.rules.yaml.tpl" }}
+groups:
+- name: custom-node.rules
+  rules:
+  - alert: KubernetesOneNodeLostSLO
+    expr: sum(kube_node_status_condition{condition="Ready",status="false"}) - sum(kube_node_spec_unschedulable) == 1
+    for: 15s
+    labels:
+      severity: interrupt
+      serviceLevel: objective
+      team: infra
+      type: functional
+    annotations:
+      description: node {{`{{$labels.instance}}`}} is failing
+      summary: Kubernetes detected 1 node with availability issue for at least 15s
+      documentation: http://grafana.observability.svc.4tech-c01fr.local/d/zn2oeyZiz/network-checker?orgId=1
+  - alert: KubernetesTwoNodesLostSLO
+    expr: sum(kube_node_status_condition{condition="Ready",status="false"}) - sum(kube_node_spec_unschedulable) == 2
+    for: 5m
+    labels:
+      severity: page
+      serviceLevel: objective
+      team: infra
+      type: functional
+    annotations:
+      description: Kubernetes detects that 2 or more nodes are failing for more than 5m
+      summary: Node availability for 5m
+      documentation: http://grafana.observability.svc.4tech-c01fr.local/d/zn2oeyZiz/network-checker?orgId=1
+  - alert: KubernetesNodesAvailabilitySLA
+    expr: sum(kube_node_status_condition{condition="Ready",status="false"}) - sum(kube_node_spec_unschedulable) >= 3
+    for: 5m
+    labels:
+      severity: page
+      serviceLevel: agreement
+      type: functional
+    annotations:
+      description: Kubernetes detects that 3 or more nodes are failing for more than 5m
+      summary: Node availability for 5m
+      documentation: http://grafana.observability.svc.4tech-c01fr.local/d/zn2oeyZiz/network-checker?orgId=1
+{{ end }}
