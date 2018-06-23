@@ -2,7 +2,7 @@
 groups:
 - name: custom-node.rules
   rules:
-  - alert: KubernetesOneNodeLostSLO
+  - alert: Kubernetes_One_Node_Lost_SLO
     expr: sum(kube_node_status_condition{condition="Ready",status="false"}) - sum(kube_node_spec_unschedulable) == 1
     for: 15s
     labels:
@@ -13,8 +13,8 @@ groups:
     annotations:
       description: node {{`{{$labels.instance}}`}} is failing
       summary: Kubernetes detected 1 node with availability issue for at least 15s
-      documentation: http://grafana.observability.svc.4tech-c01fr.local/d/zn2oeyZiz/network-checker?orgId=1
-  - alert: KubernetesTwoNodesLostSLO
+      grafana: d/zn2oeyZiz/network-checker?
+  - alert: Kubernetes_Two_Nodes_Lost_SLO
     expr: sum(kube_node_status_condition{condition="Ready",status="false"}) - sum(kube_node_spec_unschedulable) == 2
     for: 5m
     labels:
@@ -25,8 +25,8 @@ groups:
     annotations:
       description: Kubernetes detects that 2 or more nodes are failing for more than 5m
       summary: Node availability for 5m
-      documentation: http://grafana.observability.svc.4tech-c01fr.local/d/zn2oeyZiz/network-checker?orgId=1
-  - alert: KubernetesNodesAvailabilitySLA
+      grafana: d/zn2oeyZiz/network-checker?
+  - alert: Kubernetes_Nodes_Availability_SLA_Page
     expr: sum(kube_node_status_condition{condition="Ready",status="false"}) - sum(kube_node_spec_unschedulable) >= 3
     for: 5m
     labels:
@@ -36,5 +36,29 @@ groups:
     annotations:
       description: Kubernetes detects that 3 or more nodes are failing for more than 5m
       summary: Node availability for 5m
-      documentation: http://grafana.observability.svc.4tech-c01fr.local/d/zn2oeyZiz/network-checker?orgId=1
+      grafana: d/zn2oeyZiz/network-checker?
+  - alert: Nodes_Disk_Space_Used_Warning
+    expr: ((node_filesystem_size{mountpoint="/rootfs/mnt/data"} - node_filesystem_free{mountpoint="/rootfs/mnt/data"}) / node_filesystem_size{mountpoint="/rootfs/mnt/data"}) * 100 > 65
+    for: 15m
+    labels:
+      severity: interrupt
+      serviceLevel: objective
+      team: infra
+      type: functional
+    annotations:
+      description: Node filesystem used > 65%
+      summary: Node filesystem used > 65%
+      grafana: d/pPJ4QFGik/server-metrology?
+  - alert: Nodes_Disk_Space_Used_Critical
+    expr: ((node_filesystem_size{mountpoint="/rootfs/mnt/data"} - node_filesystem_free{mountpoint="/rootfs/mnt/data"}) / node_filesystem_size{mountpoint="/rootfs/mnt/data"}) * 100 > 85
+    for: 5m
+    labels:
+      severity: page
+      serviceLevel: objective
+      team: infra
+      type: functional
+    annotations:
+      description: Node filesystem used > 85%
+      summary: Node filesystem used > 85%
+      grafana: d/pPJ4QFGik/server-metrology?
 {{ end }}
