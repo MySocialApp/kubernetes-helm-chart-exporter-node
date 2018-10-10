@@ -27,9 +27,9 @@ spec:
 {{ toYaml .Values.container.args | indent 10 }}
           {{- end }}
           ports:
-            - name: metrics
-              containerPort: {{ .Values.service.containerPort }}
-              hostPort: {{ .Values.service.containerPort }}
+          - name: metrics
+            containerPort: {{ .Values.service.containerPort }}
+            hostPort: {{ .Values.service.containerPort }}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
           {{- if and .Values.container .Values.container.volumeMounts }}
