@@ -1,0 +1,5 @@
+.idea/
+tests/.vagrant/
+dind-cluster-*.sh
+kubernetes-helm-chart-prometheus-operator/
+tests/k8s-euft/
