@@ -38,7 +38,7 @@ groups:
       summary: Node availability for 5m
       grafana: d/zn2oeyZiz/network-checker?
   - alert: Nodes_Disk_Space_Used_Warning
-    expr: ((node_filesystem_size_bytes{mountpoint="/rootfs/mnt/data"} - node_filesystem_free_bytes{mountpoint="/rootfs/mnt/data"}) / node_filesystem_size_bytes{mountpoint="/rootfs/mnt/data"}) * 100 > 65
+    expr: ((node_filesystem_size_bytes{mountpoint="/rootfs/mnt/device0"} - node_filesystem_free_bytes{mountpoint="/rootfs/mnt/device0"}) / node_filesystem_size_bytes{mountpoint="/rootfs/mnt/device0"}) * 100 > 65
     for: 15m
     labels:
       severity: interrupt
@@ -50,7 +50,31 @@ groups:
       summary: Node filesystem used > 65%
       grafana: d/pPJ4QFGik/server-metrology?
   - alert: Nodes_Disk_Space_Used_Critical
-    expr: ((node_filesystem_size_bytes{mountpoint="/rootfs/mnt/data"} - node_filesystem_free_bytes{mountpoint="/rootfs/mnt/data"}) / node_filesystem_size_bytes{mountpoint="/rootfs/mnt/data"}) * 100 > 85
+    expr: ((node_filesystem_size_bytes{mountpoint="/rootfs/mnt/device0"} - node_filesystem_free_bytes{mountpoint="/rootfs/mnt/device0"}) / node_filesystem_size_bytes{mountpoint="/rootfs/mnt/device0"}) * 100 > 85
+    for: 5m
+    labels:
+      severity: page
+      serviceLevel: objective
+      team: infra
+      type: functional
+    annotations:
+      description: Node filesystem used > 85%
+      summary: Node filesystem used > 85%
+      grafana: d/pPJ4QFGik/server-metrology?
+  - alert: Nodes_Disk_Space_Used_Warning
+    expr: ((node_filesystem_size_bytes{mountpoint="/rootfs/mnt/device1"} - node_filesystem_free_bytes{mountpoint="/rootfs/mnt/device1"}) / node_filesystem_size_bytes{mountpoint="/rootfs/mnt/device1"}) * 100 > 65
+    for: 15m
+    labels:
+      severity: interrupt
+      serviceLevel: objective
+      team: infra
+      type: functional
+    annotations:
+      description: Node filesystem used > 65%
+      summary: Node filesystem used > 65%
+      grafana: d/pPJ4QFGik/server-metrology?
+  - alert: Nodes_Disk_Space_Used_Critical
+    expr: ((node_filesystem_size_bytes{mountpoint="/rootfs/mnt/device1"} - node_filesystem_free_bytes{mountpoint="/rootfs/mnt/device1"}) / node_filesystem_size_bytes{mountpoint="/rootfs/mnt/device1"}) * 100 > 85
     for: 5m
     labels:
       severity: page
